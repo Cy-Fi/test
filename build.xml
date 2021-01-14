@@ -1,0 +1,47 @@
+<project name="SimpleProject" default="dist">
+    <property name="build.dir" value="build"/>
+    <property name="source.dir" value="src"/>
+    <property name="distribution.dir" value="dist"/>
+    <property name="lib.dir" value="lib"/>
+
+    <tstamp>
+        <format property="CURRENT_TIMESTAMP" pattern="yyyymmdd" locale="de,CH"/>
+    </tstamp>
+
+    <path id="compile.classpath">
+        <fileset dir="${lib.dir}">
+            <include name="**/*.jar"/>
+            <include name="**/*.class"/>
+        </fileset>
+    </path>
+
+    <path id="run.classpath">
+        <pathelement location="${build.dir}"/>
+        <path refid="compile.classpath"/>
+    </path>
+
+    <target name="init">
+        <mkdir dir="${build.dir}"/>
+        <mkdir dir="${distribution.dir}"/>
+    </target>
+
+    <target name="compile" depends="init">
+        <javac srcdir="${source.dir}" destdir="${build.dir}">
+            <classpath refid="compile.classpath"/>
+        </javac>
+    </target>
+
+    <target name="dist" depends="compile" description="generate the distribution">
+
+        <copy todir="${build.dir}/${lib.dir}" overwrite="false">
+            <fileset dir="${lib.dir}"/>
+        </copy>
+
+        <jar destfile="${distribution.dir}/histogram-${CURRENT_TIMESTAMP}.jar" basedir="${build.dir}">
+            <manifest>
+                <attribute name="Main-Class" value="demo.HistogramDemo"/>
+            </manifest>
+        </jar>
+    </target>
+
+</project>
