@@ -31,6 +31,8 @@
         </javac>
     </target>
 
+    <test>blabla</test>
+
     <target name="dist" depends="compile" description="generate the distribution">
 
         <copy todir="${build.dir}/${lib.dir}" overwrite="false">
